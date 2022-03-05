@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Title }}</title>
+
+    <style>
+        .form {
+            text-align: center;
+        }
+
+        .shorturl {
+            text-align: center;
+            margin: auto;
+            margin: 2px solid;
+        }
+
+        .input-t{
+            width:100%;
+            border:2px solid #aaa;
+            border-radius:4px;
+            margin:8px 0;
+            outline:none;
+            padding:8px;
+            box-sizing:border-box;
+            transition:.3s;
+        }
+        
+        .input-t:focus{
+            border-color:dodgerBlue;
+            box-shadow:0 0 8px 0 dodgerBlue;
+        }
+
+        .button-s {
+            background-color: #fff;
+            border: 1px solid #d5d9d9;
+            border-radius: 8px;
+            box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+            box-sizing: border-box;
+            color: #0f1111;
+            cursor: pointer;
+            display: inline-block;
+            font-family: "Amazon Ember",sans-serif;
+            font-size: 13px;
+            line-height: 29px;
+            padding: 0 10px 0 11px;
+            position: relative;
+            text-align: center;
+            text-decoration: none;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            vertical-align: middle;
+            width: 100px;
+        }
+
+        .button-s:hover {
+            background-color: #f7fafa;
+        }
+
+        .button-s:focus {
+            border-color: #008296;
+            box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+            outline: 0;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+
+        .alert > p {
+            margin-bottom: 0;
+        }
+
+        .alert-info {
+            background-color: #d9edf7;
+            border-color: #bce8f1;
+            color: #31708f;
+        }
+
+        .alert-info hr {
+            border-top-color: #a6e1ec;
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <div class="form">
+        <input type="text" id="url" name="url" placeholder="URL" class="input-t">
+        <input type="button" onclick="sendRequest()" value="Shorten!" class="button-s">
+    </div>    
+
+    <div class="shorturl">
+        <p id="short" name="short" class="alert alert-info">The shortened url will show here!</p>
+    </div>
+
+    <div style="text-align: center;">
+        <p>or Use API : </p>
+        <h4>curl -X POST 'https://goshort.herokuapp.com/shorten' -H 'Content-Type: application/json' -d '{"url":"The URL"}'</h4>
+    </div>
+
+    <script>
+        function sendRequest() {
+
+            let urlToShort = document.querySelector("#url");
+            let shortResult = document.querySelector("#short");
+
+            let xhr = new XMLHttpRequest();
+            let url = "shorten";
+
+            xhr.open("POST", url, true);
+
+            xhr.setRequestHeader("ContentType","application/json");
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = JSON.parse(this.response);
+                    shortResult.innerHTML = response["URL"];
+                }
+            }
+
+            var data = JSON.stringify({"url":urlToShort.value});
+
+            xhr.send(data);
+
+        }
+    </script>
+    
+</body>
+</html>
