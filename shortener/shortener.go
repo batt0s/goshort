@@ -13,7 +13,7 @@ type Shortener struct {
 }
 
 func (app *Shortener) Init() {
-	app.DB = InitDB()
+	app.DB = InitDB(false)
 	app.DB.AutoMigrate(&Shortened{})
 }
 
