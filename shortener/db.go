@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"os"
 
+	_ "github.com/lib/pq"
 	"gorm.io/driver/postgres"
-	_ "gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
