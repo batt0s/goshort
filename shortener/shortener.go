@@ -3,6 +3,7 @@ package shortener
 import (
 	"fmt"
 	"log"
+	"strings"
 
 	_ "gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -54,5 +55,48 @@ func (app *Shortener) Shorten(toShort string) (*Shortened, error) {
 	return &shortened, nil
 
 	// TODO: hata kontrolü eklenecek
+
+}
+
+func (app *Shortener) GetOriginalUrl(shortUrl string) (*Shortened, error) {
+
+	if !isValidURL(shortUrl) {
+		return &Shortened{}, fmt.Errorf("Invalid URL.")
+	}
+
+	shortened := &Shortened{}
+
+	sp := strings.Split(shortUrl, "/")
+	short_url := sp[len(sp)-1]
+
+	err := app.DB.Where("short_url = ?", short_url).First(shortened)
+	if err.Error != nil {
+		return &Shortened{}, fmt.Errorf("Couldn't found url in database. %v", err.Error)
+	}
+
+	return shortened, nil
+
+}
+
+func (app *Shortener) CustomShorten(toShort string, customUrl string) (*Shortened, error) {
+
+	if !isValidURL(toShort) {
+		return &Shortened{}, fmt.Errorf("Invalid URL.")
+	}
+
+	shortened := &Shortened{}
+
+	err := app.DB.Where("short_url = ?", customUrl).First(shortened)
+	if err.Error == nil {
+		return &Shortened{}, fmt.Errorf("%v is already in database.", customUrl)
+	} else {
+		shortened = &Shortened{OriginUrl: toShort, ShortUrl: customUrl}
+		err = app.DB.Create(shortened)
+		if err != nil {
+			return shortened, err.Error
+		}
+	}
+
+	return shortened, nil
 
 }

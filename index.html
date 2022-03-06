@@ -5,132 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ .Title }}</title>
 
-    <style>
-        .form {
-            text-align: center;
-        }
-
-        .shorturl {
-            text-align: center;
-            margin: auto;
-            margin: 2px solid;
-        }
-
-        .input-t{
-            width:100%;
-            border:2px solid #aaa;
-            border-radius:4px;
-            margin:8px 0;
-            outline:none;
-            padding:8px;
-            box-sizing:border-box;
-            transition:.3s;
-        }
-        
-        .input-t:focus{
-            border-color:dodgerBlue;
-            box-shadow:0 0 8px 0 dodgerBlue;
-        }
-
-        .button-s {
-            background-color: #fff;
-            border: 1px solid #d5d9d9;
-            border-radius: 8px;
-            box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
-            box-sizing: border-box;
-            color: #0f1111;
-            cursor: pointer;
-            display: inline-block;
-            font-family: "Amazon Ember",sans-serif;
-            font-size: 13px;
-            line-height: 29px;
-            padding: 0 10px 0 11px;
-            position: relative;
-            text-align: center;
-            text-decoration: none;
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: manipulation;
-            vertical-align: middle;
-            width: 100px;
-        }
-
-        .button-s:hover {
-            background-color: #f7fafa;
-        }
-
-        .button-s:focus {
-            border-color: #008296;
-            box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
-            outline: 0;
-        }
-
-        .alert {
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid transparent;
-            border-radius: 4px;
-        }
-
-        .alert > p {
-            margin-bottom: 0;
-        }
-
-        .alert-info {
-            background-color: #d9edf7;
-            border-color: #bce8f1;
-            color: #31708f;
-        }
-
-        .alert-info hr {
-            border-top-color: #a6e1ec;
-        }
-
-    </style>
-
+    <link rel="stylesheet" href="/static/css/style.css">
+    
 </head>
 <body>
 
-    <div class="form">
-        <input type="text" id="url" name="url" placeholder="URL" class="input-t">
-        <input type="button" onclick="sendRequest()" value="Shorten!" class="button-s">
-    </div>    
+    <div class="box">
 
-    <div class="shorturl">
-        <p id="short" name="short" class="alert alert-info">The shortened url will show here!</p>
+        <h3 style="text-align: center;">Shorten URL</h3>
+        <div class="form">
+            <input type="text" id="url" name="url" placeholder="URL" class="input-t">
+            <input type="button" id="shortenbtn" onclick="shortenUrl()" value="Shorten!" class="button-s">
+            <br>
+            <label for="customcheck" style="font-size: 13px;">Do you want to assign a custom short URL?</label>
+            <input type="checkbox" name="customcheck" id="customcheck" onclick="showCustomBox()" >
+            <div class="form" id="customdiv" style="display: none;">
+                <input type="text" id="customurl" name="customurl" placeholder="Custom URL" class="input-t">
+                <input type="button" onclick="customShorten()" value="Shorten!" class="button-s">
+            </div>
+        </div>    
+
+        <div class="shorturl">
+            <p id="short" name="short" class="alert alert-info">The shortened url will show here!</p>
+        </div>
+
+        
+        <div style="text-align: center;">
+            <h5>or Use API : </h5>
+            <code>curl -X POST 'https://goshrt.herokuapp.com/shorten' -H 'Content-Type: application/json' -d '{"url":"URL to short"}'</code>
+            <br>
+            <code>curl -X POST 'https://goshrt.herokuapp.com/shorten/custom' -H 'Content-Type: application/json' -d '{"url":"URL to short","custom":"custom short url"}'</code>
+        </div>
+
     </div>
 
-    <div style="text-align: center;">
-        <p>or Use API : </p>
-        <h4>curl -X POST 'https://goshort.herokuapp.com/shorten' -H 'Content-Type: application/json' -d '{"url":"The URL"}'</h4>
+    <div class="box">
+
+        <h3 style="text-align: center;">Get Original URL from a Short URL</h3>
+        <div class="form">
+            <input type="text" name="shorturl" id="shorturl" placeholder="Short URL" class="input-t">
+            <input type="button" onclick="getOrigin()" value="Get Original" class="button-s">
+        </div>
+
+        <div class="shorturl">
+            <p id="origin" name="origin" class="alert alert-info">The original url will show here!</p>
+        </div>
+
+        <div style="text-align: center;">
+            <h5>or Use API : </h5>
+            <code>curl -X POST 'https://goshrt.herokuapp.com/getOrigin' -H 'Content-Type: application/json' -d '{"url":"Short URL"}'</code>
+        </div>
+
     </div>
-
-    <script>
-        function sendRequest() {
-
-            let urlToShort = document.querySelector("#url");
-            let shortResult = document.querySelector("#short");
-
-            let xhr = new XMLHttpRequest();
-            let url = "shorten";
-
-            xhr.open("POST", url, true);
-
-            xhr.setRequestHeader("ContentType","application/json");
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var response = JSON.parse(this.response);
-                    shortResult.innerHTML = response["URL"];
-                }
-            }
-
-            var data = JSON.stringify({"url":urlToShort.value});
-
-            xhr.send(data);
-
-        }
-    </script>
     
+    <div style="text-align: center;">
+        <p>Author : <a target="_blank" href="https://github.com/batt0s">Battos</a>, 2022</p>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+
 </body>
 </html>
