@@ -1,1 +1,4 @@
-database/
+# Docker compose file for local dev database
+database
+# Tests are not finished
+shortener/handlers_test.go

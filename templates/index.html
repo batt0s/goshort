@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Title }}</title>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+</head>
+<body>
+
+    <div class="box">
+
+        <h3 style="text-align: center;">Shorten URL</h3>
+        <div class="form">
+            <input type="text" id="url" name="url" placeholder="URL" class="input-t">
+            <input type="button" id="shortenbtn" onclick="shortenUrl()" value="Shorten!" class="button-s">
+            <br>
+            <label for="customcheck" style="font-size: 13px;">Do you want to assign a custom short URL?</label>
+            <input type="checkbox" name="customcheck" id="customcheck" onclick="showCustomBox()" >
+            <div class="form" id="customdiv" style="display: none;">
+                <input type="text" id="customurl" name="customurl" placeholder="Custom URL" class="input-t">
+                <input type="button" onclick="customShorten()" value="Shorten!" class="button-s">
+            </div>
+        </div>    
+
+        <div class="shorturl">
+            <p id="short" name="short" class="alert alert-info">The shortened url will show here!</p>
+        </div>
+
+        
+        <div style="text-align: center;">
+            <h5>or Use API : </h5>
+            <a target="_blank" href="https://{{ .Host }}/api/help" style="font-size: small;">Show me how to</a>
+        </div>
+
+    </div>
+
+    <div class="box">
+
+        <h3 style="text-align: center;">Get Original URL from a Short URL</h3>
+        <div class="form">
+            <input type="text" name="shorturl" id="shorturl" placeholder="Short URL" class="input-t">
+            <input type="button" onclick="getOrigin()" value="Get Original" class="button-s">
+        </div>
+
+        <div class="shorturl">
+            <p id="origin" name="origin" class="alert alert-info">The original url will show here!</p>
+        </div>
+
+        <div style="text-align: center;">
+            <h5>or Use API : </h5>
+            <a target="_blank" href="https://{{ .Host }}/api/help" style="font-size: small;">Show me how to</a>
+        </div>
+
+    </div>
+    
+    <div style="text-align: center;">
+        <p>Author : <a target="_blank" href="https://github.com/batt0s">Battos</a>, 2022</p>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+
+</body>
+</html>

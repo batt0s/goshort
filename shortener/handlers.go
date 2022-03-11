@@ -19,10 +19,12 @@ func (app *App) Init() {
 	app.Router = mux.NewRouter()
 	shortener.Init()
 	app.Router.HandleFunc("/", app.Index).Methods("GET")
-	app.Router.HandleFunc("/shorten", app.Shorten).Methods("POST")
+	apiPathPrefix := app.Router.PathPrefix("/api").Subrouter()
+	apiPathPrefix.HandleFunc("/shorten", app.Shorten).Methods("POST")
+	apiPathPrefix.HandleFunc("/getOrigin", app.GetOriginalUrl).Methods("POST")
+	apiPathPrefix.HandleFunc("/shorten/custom", app.CustomShorten).Methods("POST")
+	apiPathPrefix.HandleFunc("/help", app.APIHelpPage).Methods("GET")
 	app.Router.HandleFunc("/{surl}", app.Redirect).Methods("GET")
-	app.Router.HandleFunc("/getOrigin", app.GetOriginalUrl).Methods("POST")
-	app.Router.HandleFunc("/shorten/custom", app.CustomShorten).Methods("POST")
 	app.Router.PathPrefix("/static/js/").Handler(http.StripPrefix("/static/js/", http.FileServer(http.Dir("./static/js/"))))
 	app.Router.PathPrefix("/static/css/").Handler(http.StripPrefix("/static/css/", http.FileServer(http.Dir("./static/css/"))))
 }
@@ -32,21 +34,23 @@ func (app *App) Run(port string) {
 	log.Fatal(http.ListenAndServe(":"+port, app.Router))
 }
 
-type indexPage struct {
+type HTMLPage struct {
 	Title string
+	Host  string
 }
 
 func (app *App) Index(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("index.html")
+	t, err := template.ParseFiles("templates/index.html")
 	if err != nil {
 		log.Println(err)
 		sendResponse(w, http.StatusBadRequest, map[string]string{"error": err.Error()})
 		return
 	}
-	t.Execute(w, indexPage{Title: "GoShort"})
+	t.Execute(w, HTMLPage{Title: "GoShort", Host: r.Host})
 }
 
-type Body struct {
+// Request body
+type RequestBody struct {
 	URL    string `json:"url"`
 	Custom string `json:"custom"`
 }
@@ -59,7 +63,7 @@ func sendResponse(w http.ResponseWriter, statusCode int, payload interface{}) {
 }
 
 func (app *App) Shorten(w http.ResponseWriter, r *http.Request) {
-	var body Body
+	var body RequestBody
 
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&body); err != nil {
@@ -79,7 +83,7 @@ func (app *App) Shorten(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *App) GetOriginalUrl(w http.ResponseWriter, r *http.Request) {
-	var body Body
+	var body RequestBody
 
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&body); err != nil {
@@ -98,7 +102,7 @@ func (app *App) GetOriginalUrl(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *App) CustomShorten(w http.ResponseWriter, r *http.Request) {
-	var body Body
+	var body RequestBody
 
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&body); err != nil {
@@ -123,4 +127,14 @@ func (app *App) Redirect(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, shortened.OriginUrl, http.StatusSeeOther)
 
+}
+
+func (app *App) APIHelpPage(w http.ResponseWriter, r *http.Request) {
+	t, err := template.ParseFiles("templates/apihelp.html")
+	if err != nil {
+		log.Println(err)
+		sendResponse(w, http.StatusBadRequest, map[string]string{"error": err.Error()})
+		return
+	}
+	t.Execute(w, HTMLPage{Title: "GoShort / API", Host: r.Host})
 }

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Title }}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <h1>How to use API?</h1>
+    <p>You can use the API in your apps freely.</p>
+    <div class="box">
+        <div class="box">
+            <h4>shorten</h4>
+            POST <code>{{ .Host }}/api/shorten</code>
+            <p>*url : string</p>
+        </div>
+        <div class="box">
+            <h4>shorten/custom</h4>
+            POST <code>{{ .Host }}/api/shorten/custom</code>
+            <p>*url : string, *custom : string</p>
+        </div>
+        <div class="box">
+            <h4>getOrigin</h4>
+            POST <code>{{ .Host }}/api/getOrigin</code>
+            <p>*url : string</p>
+        </div>
+    </div>
+    <div class="box">
+        <h2>Examples : </h2>
+        <h3>Curl</h3>
+        <pre class="prettyprint">
+            # Shorten URL :
+            curl -X POST 'http://{{ .Host }}/api/shorten' -H 'Content-Type: application/json' -d '{"url":"URL to short"}' 
+            # Shorten with custom short URL :
+            curl -X POST 'http://{{ .Host }}/api/shorten/custom' -H 'Content-Type: application/json' -d '{"url":"URL to short","custom":"Custom Short URL"}' 
+            # Get Original URL : 
+            curl -X POST 'http://{{ .Host }}/api/getOrigin' -H 'Content-Type: application/json' -d '{"url":"Short URL"}' 
+        </pre>
+        <h3>Pyhton</h3>
+        <pre class="prettyprint lang-py">
+            import requests
+            url = "http://{{ .Host }}/api/"
+            # Shorten URL :
+            res = request.post(url+"shorten", json={'url':'URL to short'})
+            print(res.text)
+            # Shorten URL with custom short URL :
+            res = request.post(url+"shorten/custom", json={'url':'URL to short','custom':'Custom short URL'})
+            print(res.text)
+            # Get Original URL :
+            res = request.post(url+"getOrigin", json={'url':'Short URL'})
+            print(res.text)
+        </pre>
+        
+    </div>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+</body>
+</html>
