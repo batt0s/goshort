@@ -1,5 +1,6 @@
 # GoShort
 Yet another URL Shortener written in Go. Used net/http, gorilla/mux router and PostgreSQL.  
+[![Go](https://github.com/batt0s/goshort/actions/workflows/go.yml/badge.svg)](https://github.com/batt0s/goshort/actions/workflows/go.yml)  
 [goshort](https://goshrt.herokuapp.com) : Website deployed on Heroku  
 It is actually a hobby project that i made for improving my coding skills in Go.
 ![Screen Shot](https://i.imgur.com/bb5haxk.png)
