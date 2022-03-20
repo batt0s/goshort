@@ -3,16 +3,18 @@ package shortener
 import (
 	"database/sql"
 	"os"
+	"strings"
 
 	_ "github.com/lib/pq"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
-func InitDB(dev bool) *gorm.DB {
+func InitDB(mode string) *gorm.DB {
 	var db *gorm.DB
 	var err error
-	if dev {
+	if strings.ToLower(mode) != "prod" {
 		dsn := "host=localhost user=postgres password=password dbname=goshort port=5432 sslmode=disable"
 		db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 		if err != nil {
@@ -26,7 +28,9 @@ func InitDB(dev bool) *gorm.DB {
 		}
 		db, err = gorm.Open(postgres.New(postgres.Config{
 			Conn: sqlDB,
-		}), &gorm.Config{})
+		}), &gorm.Config{
+			Logger: logger.Default.LogMode(logger.Silent),
+		})
 		if err != nil {
 			panic(err)
 		}

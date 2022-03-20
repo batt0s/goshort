@@ -3,6 +3,7 @@ package shortener
 import (
 	"fmt"
 	"log"
+	"os"
 	"strings"
 
 	_ "gorm.io/driver/sqlite"
@@ -14,7 +15,7 @@ type Shortener struct {
 }
 
 func (app *Shortener) Init() {
-	app.DB = InitDB(false)
+	app.DB = InitDB((os.Getenv("APP_MODE")))
 	app.DB.AutoMigrate(&Shortened{})
 }
 
@@ -50,19 +51,11 @@ func (app *Shortener) Shorten(toShort string) (*Shortened, error) {
 		return &shortened, err.Error
 	}
 
-	log.Println("shortener.Shorten : ", shortened.ShortUrl)
-
 	return &shortened, nil
-
-	// TODO: hata kontrolü eklenecek
 
 }
 
 func (app *Shortener) GetOriginalUrl(shortUrl string) (*Shortened, error) {
-
-	if !isValidURL(shortUrl) {
-		return &Shortened{}, fmt.Errorf("Invalid URL.")
-	}
 
 	shortened := &Shortened{}
 

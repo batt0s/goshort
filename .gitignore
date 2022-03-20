@@ -1,4 +1,6 @@
 # Docker compose file for local dev database
-database
-# Tests are not finished
-shortener/handlers_test.go
+database/
+# log files
+*.log
+# Local docker files
+Dockerfile
