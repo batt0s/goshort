@@ -6,7 +6,6 @@ Yet another URL Shortener written in Go. Used net/http, gorilla/mux router and P
 
 It is actually a hobby project that i made for improving my coding skills in Go.
 
-![Screen Shot](https://i.imgur.com/bb5haxk.png)
 
 ## Features
 - URL Shortening
@@ -14,4 +13,7 @@ It is actually a hobby project that i made for improving my coding skills in Go.
 - Getting Original URL of a Short URL
 
 ### To Do 
+- A Chrome Extension
 - Expirable Links
+
+![Screen Shot](https://i.imgur.com/bb5haxk.png)
