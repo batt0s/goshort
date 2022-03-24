@@ -25,7 +25,7 @@ func checkResponseCode(t *testing.T, expected, actual int) {
 func TestShorten(t *testing.T) {
 
 	jsonData := []byte(`{"url":"https://google.com"}`)
-	req, _ := http.NewRequest("POST", "/api/shorten", bytes.NewBuffer(jsonData))
+	req, _ := http.NewRequest("POST", "/api/latest/shorten", bytes.NewBuffer(jsonData))
 	req.Header.Set("Content-Type", "application/json")
 
 	res := executeRequest(req)
@@ -39,7 +39,7 @@ func TestCustomShorten(t *testing.T) {
 		"url":"https://google.com",
 		"custom":"test"
 	}`)
-	req, _ := http.NewRequest("POST", "/api/shorten/custom", bytes.NewBuffer(jsonData))
+	req, _ := http.NewRequest("POST", "/api/latest/customShorten", bytes.NewBuffer(jsonData))
 	req.Header.Set("Content-Type", "application/json")
 
 	res := executeRequest(req)
@@ -67,7 +67,7 @@ func TestCustomShorten(t *testing.T) {
 func TestGetOrigin(t *testing.T) {
 
 	jsonData := []byte(`{"url":"test"}`)
-	req, _ := http.NewRequest("POST", "/api/getOrigin", bytes.NewBuffer(jsonData))
+	req, _ := http.NewRequest("POST", "/api/latest/getOrigin", bytes.NewBuffer(jsonData))
 	req.Header.Set("Content-Type", "application/json")
 
 	res := executeRequest(req)

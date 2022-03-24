@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"log"
 	"os"
 	"os/signal"
 
@@ -11,7 +10,9 @@ import (
 
 func main() {
 	app := shortener.App{}
+	app.Init()
 
+	// Gracefully shutdown
 	shutdown := make(chan struct{})
 	go func() {
 		sigint := make(chan os.Signal, 1)
@@ -22,16 +23,15 @@ func main() {
 		<-sigint
 
 		// when recieved a interrupt signal
-		log.Println("Interrupt signal recieved. Gracefully stopping.")
+		shortener.CustomLogger.Info("Interrupt signal recieved. Gracefully stopping.")
 		err := app.Server.Shutdown(context.Background())
 		if err != nil {
-			log.Println("HTTP Server Shutdown Error :", err.Error())
+			shortener.CustomLogger.Error("HTTP Server Shutdown Error :", err.Error())
 		}
-		log.Println("Stopped.")
+		shortener.CustomLogger.Info("Stopped.")
 		close(shutdown)
 	}()
 
-	app.Init()
 	app.Run()
 
 	<-shutdown

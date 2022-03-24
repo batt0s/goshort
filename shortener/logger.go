@@ -2,48 +2,45 @@ package shortener
 
 import (
 	"log"
-	"net/http"
-	"time"
-
-	"github.com/gorilla/mux"
+	"os"
 )
 
-type statusResponseWriter struct {
-	http.ResponseWriter
-	statusCode int
+// LOGGER Settings and Logger struct
+
+type Logger struct {
+	infoLogger   *log.Logger
+	warnLogger   *log.Logger
+	errorLogger  *log.Logger
+	routerLogger *log.Logger
 }
 
-// NewStatusResponseWriter returns pointer to a new statusResponseWriter object
-func NewStatusResponseWriter(w http.ResponseWriter) *statusResponseWriter {
-	return &statusResponseWriter{
-		ResponseWriter: w,
-		statusCode:     http.StatusOK,
-	}
+func (logger *Logger) InitLogger() {
+	flags := log.LstdFlags | log.Lshortfile
+	log.SetFlags(flags)
+	infoLogger := log.New(os.Stdout, "INFO: ", flags)
+	warnLogger := log.New(os.Stdout, "WARNING: ", flags)
+	errorLogger := log.New(os.Stdout, "ERROR: ", flags)
+	routerLogger := log.New(os.Stdout, "ROUTER: ", log.LstdFlags)
+	logger.infoLogger = infoLogger
+	logger.warnLogger = warnLogger
+	logger.errorLogger = errorLogger
+	logger.routerLogger = routerLogger
 }
 
-// WriteHeader assigns status code and header to ResponseWriter of statusResponseWriter object
-func (sw *statusResponseWriter) WriteHeader(statusCode int) {
-	sw.statusCode = statusCode
-	sw.ResponseWriter.WriteHeader(statusCode)
+func (logger *Logger) Info(v ...interface{}) {
+	logger.infoLogger.Println(v...)
 }
 
-func RequestLoggerMiddleware(r *mux.Router) mux.MiddlewareFunc {
-	return func(h http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			start := time.Now()
-			sw := NewStatusResponseWriter(w)
-			defer func() {
-				log.Printf(
-					"[%s] [%d] (%v) %s %s",
-					r.Method,
-					sw.statusCode,
-					time.Since(start),
-					r.Host,
-					r.URL.Path,
-				)
-			}()
-
-			h.ServeHTTP(sw, r)
-		})
-	}
+func (logger *Logger) Warn(v ...interface{}) {
+	logger.warnLogger.Println(v...)
 }
+
+func (logger *Logger) Error(v ...interface{}) {
+	logger.errorLogger.Println(v...)
+}
+
+func (logger *Logger) RouterLog(format string, v ...interface{}) {
+	logger.routerLogger.Printf(format, v...)
+}
+
+var CustomLogger = Logger{}

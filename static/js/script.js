@@ -27,7 +27,7 @@ function shortenUrl() {
     let shortResult = document.querySelector("#short");
 
     let xhr = new XMLHttpRequest();
-    let url = "api/shorten";
+    let url = "api/latest/shorten";
 
     xhr.open("POST", url, true);
 
@@ -64,7 +64,7 @@ function customShorten() {
     let shortResult = document.querySelector("#short");
 
     let xhr = new XMLHttpRequest();
-    let url = "api/shorten/custom";
+    let url = "api/latest/customShorten";
     xhr.open("POST", url, true);
 
     xhr.setRequestHeader("ContentType","application/json");
@@ -96,7 +96,7 @@ function getOrigin() {
     let originResult = document.querySelector("#origin");
 
     let xhr = new XMLHttpRequest();
-    let url = "api/getOrigin";
+    let url = "api/latest/getOrigin";
 
     xhr.open("POST", url, true);
 

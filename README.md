@@ -1,8 +1,8 @@
 # GoShort
 [![Go Build](https://github.com/batt0s/goshort/actions/workflows/go.yml/badge.svg)](https://github.com/batt0s/goshort/actions/workflows/go.yml)  
-Yet another URL Shortener written in Go. Used net/http, gorilla/mux router and PostgreSQL.  
+Yet another URL Shortener written in Go. Used net/http, [chi](https://github.com/go-chi/chi) router and PostgreSQL.  
 
-[goshort](https://goshrt.herokuapp.com) : Website deployed on Heroku  
+[GoShort on Heroku](https://goshrt.herokuapp.com)   
 
 It is actually a hobby project that i made for improving my coding skills in Go.
 

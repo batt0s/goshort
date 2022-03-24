@@ -3,7 +3,7 @@ module github.com/batt0s/goshort
 go 1.17
 
 require (
-	github.com/gorilla/mux v1.8.0
+	github.com/go-chi/chi/v5 v5.0.7
 	github.com/lib/pq v1.10.4
 	gorm.io/driver/postgres v1.3.1
 	gorm.io/driver/sqlite v1.3.1
