@@ -38,16 +38,13 @@ curl -X POST 'http://{{ .Host }}/api/latest/shorten' -H 'Content-Type: applicati
             <pre class="prettyprint lang-py">
 import requests
 url = "http://{{ .Host }}/api/latest/shorten"
-res = request.post(url, json={'url':'URL to short'})
-print(res.text)
-            </pre>
+res = requests.post(url, json={'url':'URL to short'})
+print(res.text)</pre>
             <p>Example response </p>
             <pre class="prettyprint">
-Content-Type: application/json
 {
     "URL": "localhost:8080/s/ShortURL"
-}
-            </pre>
+}</pre>
         </div>
     </div>
     <div class="box">
@@ -76,24 +73,21 @@ Content-Type: application/json
             <h4>Examples : </h4>
             <p>Curl</p>
             <pre class="prettyprint">
-curl -X POST 'http://{{ .Host }}/api/latest/customShorten' -H 'Content-Type: application/json' -d '{"url":"URL to short","custom":"Custom Short URL"}'             </pre>
+curl -X POST 'http://{{ .Host }}/api/latest/customShorten' -H 'Content-Type: application/json' -d '{"url":"URL to short","custom":"Custom Short URL"}'</pre>
             <p>Pyhton</p>
             <pre class="prettyprint lang-py">
 import requests
 url = "http://{{ .Host }}/api/latest/customShorten"
-res = request.post(url, json={
+res = requests.post(url, json={
     'url':'URL to short',
     'custom':'Custom short URl'
 })
-print(res.text)
-            </pre>
+print(res.text)</pre>
             <p>Example response </p>
             <pre class="prettyprint">
-Content-Type: application/json
 {
     "URL": "localhost:8080/s/CustomShortURL"
-}
-            </pre>
+}</pre>
         </div>
     </div>
     <div class="box">
@@ -117,22 +111,18 @@ Content-Type: application/json
             <h4>Examples : </h4>
             <p>Curl</p>
             <pre class="prettyprint">
-curl -X POST 'http://{{ .Host }}/api/latest/getOrigin' -H 'Content-Type: application/json' -d '{"url":"ShortURL"}' 
-            </pre>
+curl -X POST 'http://{{ .Host }}/api/latest/getOrigin' -H 'Content-Type: application/json' -d '{"url":"ShortURL"}' </pre>
             <p>Pyhton</p>
             <pre class="prettyprint lang-py">
 import requests
 url = "http://{{ .Host }}/api/latest/shorten"
-res = request.post(url, json={'url':'ShortURL'})
-print(res.text)
-            </pre>
+res = requests.post(url, json={'url':'ShortURL'})
+print(res.text)</pre>
             <p>Example response </p>
             <pre class="prettyprint">
-Content-Type: application/json
 {
     "URL": "OriginalURL"
-}
-            </pre>
+}</pre>
         </div>
     </div>
     <p style="font-size: small;">*Send all parameters as JSON</p>
