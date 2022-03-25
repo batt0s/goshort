@@ -16,4 +16,4 @@ It is actually a hobby project that i made for improving my coding skills in Go.
 - A Chrome Extension
 - Expirable Links
 
-![Screen Shot](https://i.imgur.com/bb5haxk.png)
+![Screen Shot](https://i.imgur.com/TAZlc95.png)
