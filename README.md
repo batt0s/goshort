@@ -13,7 +13,13 @@ It is actually a hobby project that i made for improving my coding skills in Go.
 - Getting Original URL of a Short URL
 
 ### To Do 
-- A Chrome Extension
+- Dark Mode
+- Chrome, Firefox and Opera Extensions
+- A good icon/logo
 - Expirable Links
+
+
+
+#### Screenshot 
 
 ![Screen Shot](https://i.imgur.com/TAZlc95.png)
