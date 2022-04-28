@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+<html>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ .Title }}</title>
 
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" id="linkStyle" href="/static/css/style.css">
     
 </head>
 <body>
@@ -15,13 +16,13 @@
         <h3 style="text-align: center;">Shorten URL</h3>
         <div class="form">
             <input type="text" id="url" name="url" placeholder="URL" class="input-t">
-            <input type="button" id="shortenbtn" onclick="shortenUrl()" value="Shorten!" class="button-s">
+            <input type="button" id="shortenbtn" onclick="shortenUrl()" value="Shorten!">
             <br>
             <label for="customcheck" style="font-size: 13px;">Do you want to assign a custom short URL?</label>
             <input type="checkbox" name="customcheck" id="customcheck" onclick="showCustomBox()" >
             <div class="form" id="customdiv" style="display: none;">
                 <input type="text" id="customurl" name="customurl" placeholder="Custom URL" class="input-t">
-                <input type="button" onclick="customShorten()" value="Shorten!" class="button-s">
+                <input type="button" onclick="customShorten()" value="Shorten!">
             </div>
         </div>    
 
@@ -35,7 +36,7 @@
         <h3 style="text-align: center;">Get Original URL from a Short URL</h3>
         <div class="form">
             <input type="text" name="shorturl" id="shorturl" placeholder="Short URL" class="input-t">
-            <input type="button" onclick="getOrigin()" value="Get Original" class="button-s">
+            <input type="button" onclick="getOrigin()" value="Get Original">
         </div>
 
         <div class="shorturl">
@@ -44,6 +45,7 @@
     </div>
     
     <div class="footer">
+        <button id="toggleTheme">Switch to Dark Mode</button>
         <p>Copyright (c) 2022 Kerem Üllenoğlu (<a href="https://github.com/batt0s">Battos</a>).</p>
         <p><a href="https://github.com/batt0s/goshort">View code on GitHub</a>. <a href="/api/latest/docs">Use API</a>.</p>
     </div>

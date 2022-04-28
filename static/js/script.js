@@ -1,3 +1,25 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const themeCss = document.getElementById("linkStyle");
+    const storedTheme = localStorage.getItem('theme');
+    if (storedTheme) {
+        themeCss.href = storedTheme;
+    }
+    const toggleTheme = document.getElementById("toggleTheme");
+    toggleTheme.addEventListener('click', () => {
+        if (themeCss.href.includes('dark')) {
+            themeCss.href = '/static/css/style.css';
+            toggleTheme.innerText = "Switch to Dark Mode";
+        } else {
+            themeCss.href = '/static/css/dark-style.css';
+            toggleTheme.innerText = "Switch to Light Mode";
+        }
+        localStorage.setItem('theme', themeCss.href)
+    });
+})
+
+
+
+
 // A function to show the custom shorten input area.
 // Hides shorten button and shows a custom url input div (custom shorten input area with custom shorten button)
 // Runs when user check the checkbox above the shorten button (Do you want to assign a cutsom short url?)
@@ -118,3 +140,4 @@ function getOrigin() {
 
     xhr.send(data);
 }
+

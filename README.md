@@ -1,25 +1,72 @@
+
 # GoShort
-[![Go Build](https://github.com/batt0s/goshort/actions/workflows/go.yml/badge.svg)](https://github.com/batt0s/goshort/actions/workflows/go.yml)  
-Yet another URL Shortener written in Go. Used net/http, [chi](https://github.com/go-chi/chi) router and PostgreSQL.  
+License             |  Go Version | Actions
+:-------------------------:|:-------------------------:|:--:
+[![MIT License](https://img.shields.io/github/license/batt0s/goshort?style=flat-square)](https://github.com/batt0s/goshort/blob/master/LICENSE) | ![Go Version](https://img.shields.io/github/go-mod/go-version/batt0s/goshort/master?label=Go%20Version&logo=go&style=flat-square) | ![Build](https://img.shields.io/github/workflow/status/batt0s/goshort/Go/master?style=flat-square)
 
-[GoShort on Heroku](https://goshrt.herokuapp.com)   
+Yet another URL shortener made in Go. \
+A hobby project of me that i made for improving my coding skills.\
+[GoShort on Heroku](https://goshrt.herokuapp.com).
 
-It is actually a hobby project that i made for improving my coding skills in Go.
+
+
+
+## Tech Stack
+
+**Client:** Pure JS, Html, Css written by me
+
+**Server:** Go (used net/http and [chi](https://github.com/go-chi/chi)), PostgreSQL
 
 
 ## Features
+
 - URL Shortening
-- URL Shortening with a custom Short URL
-- Getting Original URL of a Short URL
+- URL Shortening with a custom short URL
+- Getting original URL from a short URL
 
-### To Do 
+
+
+## To-Do
 - Dark Mode
-- Chrome, Firefox and Opera Extensions
+- Expireable Links
 - A good icon/logo
-- Expirable Links
+- Extensions for browsers
+## API Reference
+
+#### Shorten URL
+
+```http
+  POST /api/latest/shorten
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `url` | `string` | **Required**. URL to shorten. |
+
+#### Shorten URL with a custom short URL
+
+```http
+  POST /api/latest/customShorten
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `url`      | `string` | **Required**. URL to shorten. |
+| `custom` | `string` | **Required**. Custom Short URL. |
+
+#### Get Original URL
+
+```http
+  POST /api/latest/getOrigin
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `url` | `string` | **Required**. Short URL. |
 
 
+*[API page on website](http://www.goshort.xyz/api/latest/docs)*
+## Screenshots
 
-#### Screenshot 
+![App Screenshot](https://camo.githubusercontent.com/37cb45eaca67f5a48036f501d4aa56d29982d3c80ab772da33f823f9c1bde2e8/68747470733a2f2f692e696d6775722e636f6d2f54415a6c6339352e706e67)
 
-![Screen Shot](https://i.imgur.com/TAZlc95.png)
