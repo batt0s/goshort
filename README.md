@@ -1,8 +1,8 @@
 
 # GoShort
-License             |  Go Version | Actions
-:-------------------------:|:-------------------------:|:--:
-[![MIT License](https://img.shields.io/github/license/batt0s/goshort?style=flat-square)](https://github.com/batt0s/goshort/blob/master/LICENSE) | ![Go Version](https://img.shields.io/github/go-mod/go-version/batt0s/goshort/master?label=Go%20Version&logo=go&style=flat-square) | ![Build](https://img.shields.io/github/workflow/status/batt0s/goshort/Go/master?style=flat-square)
+License             |  Go Version | Actions | GoReport
+:-------------------------:|:-------------------------:|:--:|:--:
+[![MIT License](https://img.shields.io/github/license/batt0s/goshort?style=flat-square)](https://github.com/batt0s/goshort/blob/master/LICENSE) | ![Go Version](https://img.shields.io/github/go-mod/go-version/batt0s/goshort/master?label=Go%20Version&logo=go&style=flat-square) | ![Build](https://img.shields.io/github/workflow/status/batt0s/goshort/Go/master?style=flat-square) | [![Go Report Card](https://goreportcard.com/badge/github.com/batt0s/goshort)](https://goreportcard.com/report/github.com/batt0s/goshort)
 
 Yet another URL shortener made in Go. \
 A hobby project of me that i made for improving my coding skills.\
@@ -13,9 +13,9 @@ A hobby project of me that i made for improving my coding skills.\
 
 ## Tech Stack
 
-**Client:** Pure JS, Html, Css written by me
-
 **Server:** Go (used net/http and [chi](https://github.com/go-chi/chi)), PostgreSQL
+
+**Client:** Pure JS, Html, Css written by me
 
 
 ## Features
