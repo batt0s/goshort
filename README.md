@@ -34,10 +34,7 @@ A hobby project of me that i made for improving my coding skills.\
 - [x] Dark Mode
 - [ ] A good icon/logo
 - [ ] Extensions for browsers
-<<<<<<< HEAD
->>>>>>> dev
-=======
->>>>>>> 1403744838c7ff1ea3f5ebc296de8a43be7e8eb5
+
 ## API Reference
 
 #### Shorten URL
@@ -72,5 +69,4 @@ A hobby project of me that i made for improving my coding skills.\
 ![App Screenshot](https://i.imgur.com/9qoWbQd.png)
 <<<<<<< HEAD
 
-=======
->>>>>>> 1403744838c7ff1ea3f5ebc296de8a43be7e8eb5
+
