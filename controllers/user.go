@@ -38,7 +38,7 @@ func InitGoth(appMode string) {
 		log.Println("SecretKey : ", secretKey)
 	}
 	goth.UseProviders(
-		google.New(clientKey, secret, "http://localhost:8080/auth/callback?provider=google", "profile"),
+		google.New(clientKey, secret, "http://goshrt.herokuapp.com/auth/callback?provider=google", "profile"),
 	)
 }
 
