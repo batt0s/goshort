@@ -1,6 +1,11 @@
 # Docker compose file for local dev database
-database/
+docker-compose.yml
 # log files
 *.log
-# Local docker files
-Dockerfile
+# Local dev and test databases (sqlite)
+*.db
+# vscode configs (debug etc.)
+.vscode/
+
+backup/
+tmp/
