@@ -2,15 +2,23 @@ package main
 
 import (
 	"context"
+	"log"
 	"os"
 	"os/signal"
 
-	shortener "github.com/batt0s/goshort/shortener"
+	"github.com/batt0s/goshort/controllers"
 )
 
 func main() {
-	app := shortener.App{}
-	app.Init()
+	appMode := os.Getenv("APP_MODE")
+	if appMode == "" {
+		appMode = "dev"
+		log.Println("[warning] No APP_MODE in env. Defaulting to dev.")
+	}
+
+	// Create and init app
+	app := controllers.App{}
+	app.Init(appMode)
 
 	// Gracefully shutdown
 	shutdown := make(chan struct{})
@@ -23,12 +31,12 @@ func main() {
 		<-sigint
 
 		// when recieved a interrupt signal
-		shortener.CustomLogger.Info("Interrupt signal recieved. Gracefully stopping.")
+		log.Println("[info] Interrupt signal recieved. Gracefully stopping.")
 		err := app.Server.Shutdown(context.Background())
 		if err != nil {
-			shortener.CustomLogger.Error("HTTP Server Shutdown Error :", err.Error())
+			log.Println("[error] HTTP Server Shutdown Error :", err.Error())
 		}
-		shortener.CustomLogger.Info("Stopped.")
+		log.Println("[info] Stopped.")
 		close(shutdown)
 	}()
 

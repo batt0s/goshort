@@ -1,54 +1,55 @@
-<!DOCTYPE html>
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ .Title }}</title>
-
-    <link rel="stylesheet" href="/static/css/style.css">
-    
-</head>
-<body>
-
-    <div class="box">
-
-        <h3 style="text-align: center;">Shorten URL</h3>
-        <div class="form">
-            <input type="text" id="url" name="url" placeholder="URL" class="input-t">
-            <input type="button" id="shortenbtn" onclick="shortenUrl()" value="Shorten!" class="button-s">
-            <br>
-            <label for="customcheck" style="font-size: 13px;">Do you want to assign a custom short URL?</label>
-            <input type="checkbox" name="customcheck" id="customcheck" onclick="showCustomBox()" >
-            <div class="form" id="customdiv" style="display: none;">
-                <input type="text" id="customurl" name="customurl" placeholder="Custom URL" class="input-t">
-                <input type="button" onclick="customShorten()" value="Shorten!" class="button-s">
+{{ template "_header.html" }}
+    <!-- CONTENT (Shorten) -->
+    <div>
+        <h1 class="text-5xl dark:text-white text-center pt-8">
+            GoShort
+        </h1>
+        <br>
+        <!-- Input area -->
+        <br>
+        <form class="px-8 text-center">
+            <label for="url" class="text-2xl text-gray-900 dark:text-gray-300">Shorten URL</label>
+            <br><br>
+            <div class="flex">
+                <input type="text" id="url" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="URL" required="">
+                <input type="text" id="custom" class="px-5 ml-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Custom URL (Optional)" required="">
+                <button type="button" onclick="shortenUrl('')" class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Shorten</button>
             </div>
-        </div>    
-
-        <div class="shorturl">
-            <p id="short" name="short" class="alert alert-info">The shortened url will show here!</p>
+        </form>
+        
+        <!-- End -->
+        <!-- Alert -->
+        <br>
+        <div class="hidden" id="shortDiv" onclick="copyShort()">
+            <div class="p-4 mb-4 text-center text-lg text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800" role="alert">
+                <span class="font-bold" id="short">Short Url </span><svg class="inline-block right-12 absolute w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+            </div>
         </div>
+        <!-- End -->
     </div>
-
-    <div class="box">
-
-        <h3 style="text-align: center;">Get Original URL from a Short URL</h3>
-        <div class="form">
-            <input type="text" name="shorturl" id="shorturl" placeholder="Short URL" class="input-t">
-            <input type="button" onclick="getOrigin()" value="Get Original" class="button-s">
+    <!-- END -->
+    <!-- CONTENT (getOriginal) -->
+    <div>
+        <!-- Input area -->
+        <br><br><br>
+        <form class="px-8 text-center">
+            <label for="url" class="text-2xl text-gray-900 dark:text-gray-300">Get Original URL</label>
+            <br><br>
+            <div class="flex">
+                <input type="text" id="shorturl" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="URL" required="">
+                <button type="button" onclick="getOrigin()" class="px-8 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Get URL</button>
+            </div>
+        </form>
+        
+        <!-- End -->
+        <!-- Alert -->
+        <br>
+        <div class="hidden" id="originDiv" onclick="copyOrigin()">
+            <div class="p-4 mb-4 text-center text-lg text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800" role="alert">
+                <span class="font-bold" id="origin">Original Url </span><svg class="inline-block right-12 absolute w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+            </div>
         </div>
-
-        <div class="shorturl">
-            <p id="origin" name="origin" class="alert alert-info">The original url will show here!</p>
-        </div>
+        <!-- End -->
     </div>
-    
-    <div class="footer">
-        <p>Copyright (c) 2022 Kerem Üllenoğlu (<a href="https://github.com/batt0s">Battos</a>).</p>
-        <p><a href="https://github.com/batt0s/goshort">View code on GitHub</a>. <a href="/api/latest/docs">Use API</a>.</p>
-    </div>
-
-    <script src="/static/js/script.js"></script>
-
-</body>
-</html>
+    <!-- END -->
+{{ template "_footer.html" }}

@@ -15,7 +15,7 @@ A hobby project of me that i made for improving my coding skills.\
 
 **Server:** Go (used net/http and [chi](https://github.com/go-chi/chi)), PostgreSQL
 
-**Client:** Pure JS, Html, Css written by me
+**Client:** Pure JS, Html, Css (TailwindCSS)
 
 
 ## Features
@@ -23,50 +23,46 @@ A hobby project of me that i made for improving my coding skills.\
 - URL Shortening
 - URL Shortening with a custom short URL
 - Getting original URL from a short URL
-
+- Sing in with Google
+- Dashboard (See your urls and how many click did it get, if you created while you logged in with google)
 
 
 ## To-Do
-- Dark Mode
-- Expireable Links
-- A good icon/logo
-- Extensions for browsers
+- [x] Sing in with Google
+- [x] Dashboard (See your urls and how many click did it get, if you created while you logged in with google)
+- [ ] Expireable Links
+- [x] Dark Mode
+- [ ] A good icon/logo
+- [ ] Extensions for browsers
 ## API Reference
 
 #### Shorten URL
 
-```http
-  POST /api/latest/shorten
+```
+  POST /api/v2/shorten
 ```
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
 | `url` | `string` | **Required**. URL to shorten. |
+| `is_custom` | `bool` | *Optional* If you want a custom short |
+| `custom` | `string` | *Optional* Custom short URL (`is_custom` should be true) |
+| `author` | `string` | *Optional* Google user ID |
 
-#### Shorten URL with a custom short URL
 
-```http
-  POST /api/latest/customShorten
-```
-
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `url`      | `string` | **Required**. URL to shorten. |
-| `custom` | `string` | **Required**. Custom Short URL. |
 
 #### Get Original URL
 
-```http
-  POST /api/latest/getOrigin
 ```
+  POST /api/v2/getOrigin
+```
+
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
 | `url` | `string` | **Required**. Short URL. |
 
 
-*[API page on website](http://www.goshort.xyz/api/latest/docs)*
 ## Screenshots
 
-![App Screenshot](https://camo.githubusercontent.com/37cb45eaca67f5a48036f501d4aa56d29982d3c80ab772da33f823f9c1bde2e8/68747470733a2f2f692e696d6775722e636f6d2f54415a6c6339352e706e67)
-
+![App Screenshot](https://i.imgur.com/9qoWbQd.png)
