@@ -67,6 +67,3 @@ A hobby project of me that i made for improving my coding skills.\
 ## Screenshots
 
 ![App Screenshot](https://i.imgur.com/9qoWbQd.png)
-<<<<<<< HEAD
-
-
