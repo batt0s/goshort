@@ -1,0 +1,83 @@
+{{ template "_header.html" }}
+<!-- CONTENT -->
+<div>
+    <h1 class="text-5xl dark:text-white pl-16 py-8">
+        Hello, {{ .Username }}!
+    </h1>
+    <span class="dark:text-white px-8"><a href="/auth/logout">Logout</a></span>
+    <!-- CONTENT (Shorten) -->
+    <br>
+    <div>
+        <!-- Input area -->
+        <br>
+        <form class="px-8 text-center">
+            <label for="url" class="text-2xl text-gray-900 dark:text-gray-300">Shorten URL</label>
+            <br><br>
+            <div class="flex">
+                <input type="text" id="url" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="URL" required="">
+                <input type="text" id="custom" class="px-5 ml-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Custom URL (Optional)" required="">
+                <!-- <input type="hidden" name="userid" id="userid" value="{{ .UserID }}"> -->
+                <button type="button" onclick="shortenUrl('{{ .UserID }}')" class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Shorten</button>
+            </div>
+        </form>
+        
+        <!-- End -->
+        <!-- Alert -->
+        <br>
+        <div class="hidden" id="shortDiv" onclick="copyShort()">
+            <div class="p-4 mb-4 text-center text-lg text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800" role="alert">
+                <span class="font-bold" id="short">Shortened URL</span><svg class="inline-block right-12 absolute w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+            </div>
+        </div>
+        <!-- End -->
+    </div>
+    <!-- END -->
+    <br>
+    <h1 class="text-3xl dark:text-white pl-16">Shortened URLs</h1>
+    <!-- Table -->
+    <div class="relative p-8 overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400" id="table">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                    Short URL
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                    Original URL
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                    Clicks
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                    Created At
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="shorteneds">
+                {{ if .Shorteneds }}
+                    {{ range .Shorteneds }}
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                        {{ .ShortUrl }}
+                        </th>
+                        <td class="px-6 py-4">
+                        {{ .OriginUrl }}
+                        </td>
+                        <td class="px-6 py-4">
+                        {{ .Clicks }}
+                        </td>
+                        <td class="px-6 py-4">
+                        {{ .CreatedAt }}
+                        </td>
+                    </tr>
+                    {{ end }}
+                {{ else }}
+                <p class="dark:text-white">You havent shortened any urls yet.</p>
+                {{ end }}
+            </tbody>
+        </table>
+    </div>    
+    <!-- end -->
+</div>
+<!-- END -->
+{{ template "_footer.html" }}

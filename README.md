@@ -1,9 +1,9 @@
-
 # GoShort
 License             |  Go Version | Actions | GoReport
 :-------------------------:|:-------------------------:|:--:|:--:
 [![MIT License](https://img.shields.io/github/license/batt0s/goshort?style=flat-square)](https://github.com/batt0s/goshort/blob/master/LICENSE) | ![Go Version](https://img.shields.io/github/go-mod/go-version/batt0s/goshort/master?label=Go%20Version&logo=go&style=flat-square) | ![Build](https://img.shields.io/github/workflow/status/batt0s/goshort/Go/master?style=flat-square) | [![Go Report Card](https://goreportcard.com/badge/github.com/batt0s/goshort)](https://goreportcard.com/report/github.com/batt0s/goshort)
 
+YOU ARE ON "DEV" BRANCH! \
 Yet another URL shortener made in Go. \
 A hobby project of me that i made for improving my coding skills.\
 [GoShort on Heroku](https://goshrt.herokuapp.com).
@@ -15,7 +15,7 @@ A hobby project of me that i made for improving my coding skills.\
 
 **Server:** Go (used net/http and [chi](https://github.com/go-chi/chi)), PostgreSQL
 
-**Client:** Pure JS, Html, Css written by me
+**Client:** Pure JS, Html, Css (TailwindCSS)
 
 
 ## Features
@@ -23,19 +23,22 @@ A hobby project of me that i made for improving my coding skills.\
 - URL Shortening
 - URL Shortening with a custom short URL
 - Getting original URL from a short URL
-
+- Sing in with Google
+- Dashboard (See your urls and how many click did it get, if you created while you logged in with google)
 
 
 ## To-Do
-- Dark Mode
-- Expireable Links
-- A good icon/logo
-- Extensions for browsers
+- [x] Sing in with Google
+- [x] Dashboard (See your urls and how many click did it get, if you created while you logged in with google)
+- [ ] Expireable Links
+- [x] Dark Mode
+- [ ] A good icon/logo
+- [ ] Extensions for browsers
 ## API Reference
 
 #### Shorten URL
 
-```http
+```
   POST /api/latest/shorten
 ```
 
@@ -45,7 +48,7 @@ A hobby project of me that i made for improving my coding skills.\
 
 #### Shorten URL with a custom short URL
 
-```http
+```
   POST /api/latest/customShorten
 ```
 
@@ -56,7 +59,7 @@ A hobby project of me that i made for improving my coding skills.\
 
 #### Get Original URL
 
-```http
+```
   POST /api/latest/getOrigin
 ```
 
