@@ -1,3 +1,4 @@
+
 # GoShort
 License             |  Go Version | Actions | GoReport
 :-------------------------:|:-------------------------:|:--:|:--:
@@ -56,6 +57,7 @@ A hobby project of me that i made for improving my coding skills.\
   POST /api/v2/getOrigin
 ```
 
+
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
 | `url` | `string` | **Required**. Short URL. |
@@ -64,4 +66,3 @@ A hobby project of me that i made for improving my coding skills.\
 ## Screenshots
 
 ![App Screenshot](https://i.imgur.com/9qoWbQd.png)
-
