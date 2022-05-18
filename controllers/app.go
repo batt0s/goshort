@@ -3,6 +3,7 @@ package controllers
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/batt0s/goshort/config"
 	"github.com/batt0s/goshort/database"
@@ -64,8 +65,13 @@ func (app *App) Init(appMode string) {
 
 	// Init app
 	log.Println("App Mode : ", appMode)
+	var port string
 	app.Router = r
-	port := config.Conf.GetString(appMode + ".port")
+	if appMode == "prod" {
+		port = os.Getenv("PORT")
+	} else {
+		port = config.Conf.GetString(appMode + ".port")
+	}
 	if port == "" {
 		port = "8080"
 		log.Println("[warning] No port found")
