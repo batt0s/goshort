@@ -1,3 +1,5 @@
+# Env
+.env
 # Docker compose file for local dev database
 docker-compose.yml
 # log files

@@ -1,8 +1,9 @@
-package controllers
+package controllers_test
 
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/batt0s/goshort/controllers"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -12,7 +13,7 @@ var baseUrl = "/api/v2"
 
 func executeRequest(req *http.Request) *httptest.ResponseRecorder {
 	rr := httptest.NewRecorder()
-	app := App{}
+	app := controllers.App{}
 	app.Init("test")
 	app.Router.ServeHTTP(rr, req)
 	return rr
