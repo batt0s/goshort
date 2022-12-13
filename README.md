@@ -8,7 +8,7 @@ Yet another URL shortener made in Go. \
 A hobby project of me that i made for improving my coding skills.\
 [GoShort on Heroku](https://goshrt.herokuapp.com).
 
-
+**I am going to rewrite almost all of the project. You can find this verison in branch v1**
 
 
 ## Tech Stack
