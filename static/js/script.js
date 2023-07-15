@@ -19,123 +19,97 @@
 
 
 // A function to shorten the given url
-// Sends request to api (https://goshrt.herokuapp.com/api/shorten)
+// Sends request to api (/api/v3/shorten)
 // Sends a JSON data with URL and gets a JSON data with shorten url or error
-// When function gets the JSON Response, shows result area and change innerhtml to response
-// Runs when user clickes the shorten button
-function shortenUrl(userid) {
+// When function gets the JSON Response, shows result area and change inner-html to response
+// Runs when user clicks the shorten button
+function shortenUrl() {
     let urlToShortObj = document.querySelector("#url");
     let customShortObj = document.querySelector("#custom");
     let shortResultDiv = document.querySelector("#shortDiv");
     let shortResult = document.querySelector("#short");
 
-    var urlToShort = urlToShortObj.value.trim()
-
-    var isCustom
-    if (customShortObj.value.trim().length === 0) {
-        isCustom = false
-    } else {
-        isCustom = true
-        var customShort = customShortObj.value.trim()
-    }
+    const urlToShort = urlToShortObj.value.trim();
+    const customShort = customShortObj.value.trim();
 
     let xhr = new XMLHttpRequest();
-    let url = "api/v2/shorten";
+    let url = "api/v3/shorten";
 
     xhr.open("POST", url, true);
 
-    xhr.setRequestHeader("ContentType","application/json");
+    xhr.setRequestHeader("Content-Type","application/json");
 
     // When response comes check the status code and show results
     xhr.onreadystatechange = function () {
+        let response;
         if (xhr.readyState === 4 && xhr.status === 200) {
-            var response = JSON.parse(this.response);
+            response = JSON.parse(this.response);
             shortResultDiv.className = "px-8";
-            var short = response["URL"];
-            shortResult.innerHTML = short;
+            shortResult.innerHTML = response["URL"];
         } else if (xhr.readyState === 4 && xhr.status === 400 || xhr.status === 502) {
-            var response = JSON.parse(this.response);
+            response = JSON.parse(this.response);
             shortResultDiv.className = "px-8";
             shortResult.innerHTML = response["error"];
         }
     }
 
-    var data
-    if (isCustom) {
-        data = {
-            "url": urlToShort,
-            "is_custom": isCustom,
-            "custom": customShort
-        }
-    } else {
-        data = {"url": urlToShort}
-    }
-    if (userid.length !== 0) {
-        data["author"] = userid;
-        var today = new Date();
-        var date = today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate();
-        var time = today.getHours()+":"+today.getMinutes()+":"+today.getSeconds();
-        var datetime = date + " " + time
-        var addToTable = "<tr class='bg-white border-b dark:bg-gray-800 dark:border-gray-700'><th scope='row' class='px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap'>" +
-                        short +
-                        "</th><td class='px-6 py-4'>" +
-                        urlToShort +
-                        "</td><td class='px-6 py-4'>0</td><td class='px-6 py-4'>" + 
-                        datetime +
-                        "</td></tr>";
-        table = document.querySelector("#shorteneds");
-        table.innerHTML += addToTable;
+    let data = {
+        "url": urlToShort,
+        "custom": customShort
     }
 
-    json = JSON.stringify(data)
+    let json = JSON.stringify(data)
     xhr.send(json);
 
 }
 
 function copyShort() {
     let shortObj = document.querySelector("#short");
-    var short = shortObj.innerHTML.trim();
+    const short = shortObj.innerHTML.trim();
     navigator.clipboard.writeText(short);
     alert("Copied short url "+short+" to clipboard.");
 }
 
 // A function that gets Original URL of a Shortened URL
-// Sends request to API (https://goshrt.herokuapp.com/api/getOrigin) 
+// Sends request to API (/api/v3/getOrigin)
 // Sends Short URL with JSON and gets Original URL or an error with JSON
-// When function gets the JSON Response, shows result area and change innerhtml to response
-// Runs when user clickes the get origin button
+// When function gets the JSON Response, shows result area and change inner-html to response
+// Runs when user clicks the get origin button
 function getOrigin() {
     let shortUrl = document.querySelector("#shorturl");
     let originResult = document.querySelector("#origin");
     let originResultDiv = document.querySelector("#originDiv");
 
     let xhr = new XMLHttpRequest();
-    let url = "api/v2/getOrigin";
+    let url = "api/v3/getOrigin";
 
     xhr.open("POST", url, true);
 
-    xhr.setRequestHeader("ContentType","application/json");
+    xhr.setRequestHeader("Content-Type","application/json");
 
     xhr.onreadystatechange = function() {
+        let response;
         if (xhr.readyState === 4 && xhr.status === 200) {
-            var response = JSON.parse(this.response);
+            response = JSON.parse(this.response);
             originResultDiv.className = "px-8";
             originResult.innerHTML = response["URL"];
         } else if (xhr.readyState === 4 && xhr.status === 400 || xhr.status === 502) {
-            var response = JSON.parse(this.response);
+            response = JSON.parse(this.response);
             originResult.className = "px-8";
             originResult.innerHTML = response["error"];
         }
     }
 
-    var data = JSON.stringify({"url":shortUrl.value});
+    const data = JSON.stringify({
+        "url": shortUrl.value
+    });
 
     xhr.send(data);
 }
 
 function copyOrigin() {
     let originObj = document.querySelector("#origin");
-    var origin = originObj.innerHTML.trim();
+    const origin = originObj.innerHTML.trim();
     navigator.clipboard.writeText(origin);
     alert("Copied original url "+origin+" to clipboard.");
 }

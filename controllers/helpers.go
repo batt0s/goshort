@@ -17,10 +17,9 @@ func sendResponse(w http.ResponseWriter, statusCode int, payload interface{}) {
 	w.Write(response)
 }
 
-// Request body
+// RequestBody : Request body
 type RequestBody struct {
 	URL    string `json:"url"`
-	Author string `json:"author"`
 	Custom string `json:"custom"`
 }
 

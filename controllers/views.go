@@ -6,7 +6,7 @@ import (
 	"text/template"
 )
 
-// Index Page Handler
+// IndexHandler : Index Page
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	// http.ServeFile(w, r, "templates/index.html")
 	t, err := template.ParseFiles("templates/index.html", "templates/_header.html", "templates/_footer.html")

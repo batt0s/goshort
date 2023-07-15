@@ -52,7 +52,10 @@ func InitDB(mode string) error {
 			return err
 		}
 	}
-	db.AutoMigrate(&shortened{})
+	err = db.AutoMigrate(&shortened{})
+	if err != nil {
+		return err
+	}
 	DB = db
 	log.Println("[info] Connected to database.")
 	return nil

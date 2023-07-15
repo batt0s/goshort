@@ -14,15 +14,12 @@ type Shortened interface {
 	IsValid() bool
 	Create() error
 	GetOrigin() string
-	Click()
 }
 
 type shortened struct {
 	gorm.Model
 	OriginUrl string `json:"original_url"`
 	ShortUrl  string `gorm:"unique" json:"short_url"`
-	Author    string `json:"author"`
-	Clicks    int    `json:"clicks"`
 }
 
 func NewShortened() Shortened {
@@ -30,12 +27,12 @@ func NewShortened() Shortened {
 }
 
 // String method, returns
-// Shortened<ID:ShortUrl:OriginalUrl:CreatedAt:Author:Clicks>
+// Shortened<ID:ShortUrl:OriginalUrl:CreatedAt>
 func (s *shortened) String() string {
-	return fmt.Sprintf("Shortened<%d:%s:%s:%v:%s:%d>", s.ID, s.ShortUrl, s.OriginUrl, s.CreatedAt, s.Author, s.Clicks)
+	return fmt.Sprintf("Shortened<%d:%s:%s:%v>", s.ID, s.ShortUrl, s.OriginUrl, s.CreatedAt)
 }
 
-// Check if the model is valid
+// IsValid Check if the model is valid
 func (s *shortened) IsValid() bool {
 	// Check if the given URL is valid
 	if !isValidURL(s.OriginUrl) {
@@ -53,7 +50,7 @@ func (s *shortened) IsValid() bool {
 func (s *shortened) Create() error {
 	// Return error if model is not valid
 	if !s.IsValid() {
-		return errors.New("Shortened not valid")
+		return errors.New("shortened not valid")
 	}
 	// insert to database
 	// insert to database
@@ -64,65 +61,56 @@ func (s *shortened) Create() error {
 	return nil
 }
 
-// Get original url of shortened
+// GetOrigin Get original url of shortened
 func (s *shortened) GetOrigin() string {
 	return s.OriginUrl
 }
 
-// Add click
-func (s *shortened) Click() {
-	s.Clicks++
-	DB.Save(s)
-}
-
-/**
-* Shorten
-* * Shorten the given URL
- */
-func Shorten(url string, author string, custom ...string) (*shortened, error) {
+// Shorten Shorten the given url
+func Shorten(url string, custom ...string) (*shortened, error) {
 	// check if url is valid
 	if !isValidURL(url) {
 		return nil, fmt.Errorf("URL is not valid")
 	}
-	shrted := new(shortened)
-	// check if there is a short url with the given url, if there is return
-	if result := DB.Where("original_url = ?", url).First(shrted); result.Error == nil {
-		return shrted, nil
+	if len(custom) > 1 {
+		return nil, errors.New("too many args")
 	}
-	var customshort, shortUrl string
+	shrt := new(shortened)
+	// check if there is a short url with the given url, if there is return
+	if result := DB.Where("original_url = ?", url).First(shrt); result.Error == nil {
+		return shrt, nil
+	}
+	var customShort, shortUrl string
 	// check if short url is custom
 	if len(custom) == 1 {
-		customshort = custom[0]
+		customShort = custom[0]
 	}
-	shrted.OriginUrl = url
+	shrt.OriginUrl = url
 	for {
-		if strings.TrimSpace(customshort) != "" {
-			shortUrl = customshort
+		if strings.TrimSpace(customShort) != "" {
+			shortUrl = customShort
 		}
 		if shortUrl == "" {
 			shortUrl = generateRand(6)
 		}
-		shrted.ShortUrl = shortUrl
-		if shrted.IsValid() {
+		shrt.ShortUrl = shortUrl
+		if shrt.IsValid() {
 			break
 		}
 	}
-	return shrted, nil
+	return shrt, nil
 }
 
-/**
-* GetOriginal
-* * Get original url of the given short url
- */
+// GetOriginal Get original url of the given short url
 func GetOriginal(shortUrl string) (Shortened, error) {
 	if shortUrl == "" {
-		return nil, errors.New("given shorturl is empty")
+		return nil, errors.New("given shortUrl is empty")
 	}
-	shrted := new(shortened)
+	shrt := new(shortened)
 	sp := strings.Split(shortUrl, "/")
 	short := sp[len(sp)-1]
-	if result := DB.Where("short_url = ?", short).First(shrted); result.Error != nil {
+	if result := DB.Where("short_url = ?", short).First(shrt); result.Error != nil {
 		return nil, fmt.Errorf("failed to get from database. error : %s", result.Error.Error())
 	}
-	return shrted, nil
+	return shrt, nil
 }

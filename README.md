@@ -1,8 +1,8 @@
 
 # GoShort
-License             |  Go Version | Actions | GoReport
-:-------------------------:|:-------------------------:|:--:|:--:
-[![MIT License](https://img.shields.io/github/license/batt0s/goshort?style=flat-square)](https://github.com/batt0s/goshort/blob/master/LICENSE) | ![Go Version](https://img.shields.io/github/go-mod/go-version/batt0s/goshort/master?label=Go%20Version&logo=go&style=flat-square) | [![Go Report Card](https://goreportcard.com/badge/github.com/batt0s/goshort)](https://goreportcard.com/report/github.com/batt0s/goshort)
+License             |  Go Version  | GoReport
+:-------------------------:|:-------------------------:|:-:|:--:
+[![MIT License](https://img.shields.io/github/license/batt0s/goshort?style=flat-square)](https://github.com/batt0s/goshort/blob/master/LICENSE) | ![Go Version](https://img.shields.io/github/go-mod/go-version/batt0s/goshort/master?label=Go%20Version&logo=go&style=flat-square) |[![Go Report Card](https://goreportcard.com/badge/github.com/batt0s/goshort)](https://goreportcard.com/report/github.com/batt0s/goshort) 
 
 Yet another URL shortener made in Go. <br>
 A hobby project of me that i made for improving my coding skills. <br>

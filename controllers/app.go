@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"github.com/batt0s/goshort/settings"
 	"log"
 	"net/http"
 	"os"
@@ -21,8 +20,10 @@ type App struct {
 func (app *App) Init(appMode string) {
 	// Init Database
 	database.InitDB(appMode)
-	// Init goth (package for google auth)
-	InitGoth(appMode)
+
+	// Init goth (package for Google auth)
+	// InitGoth(appMode)
+
 	// Init router
 	r := chi.NewRouter()
 	r.Use(cors.Handler(cors.Options{
@@ -32,16 +33,12 @@ func (app *App) Init(appMode string) {
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 	// Endpoints
+	// Index Page
 	r.Get("/", IndexHandler)
-	// User auth service API endpoints
-	r.Route("/auth", func(r chi.Router) {
-		r.Get("/login", AuthHandler)
-		r.Get("/callback", CallbackHandler)
-		r.Get("/logout", HandleLogout)
-	})
+	// API Handlers
 	r.Route("/api", func(api chi.Router) {
 		// Shortener service API endpoints
-		api.Route("/v2", func(sr chi.Router) {
+		api.Route("/v3", func(sr chi.Router) {
 			sr.Post("/shorten", ShortenHandler)
 			// sr.Post("/customShorten", CustomShortenHandler)
 			sr.Post("/getOrigin", GetOriginalHandler)
@@ -50,7 +47,6 @@ func (app *App) Init(appMode string) {
 	// Short url redirect handler
 	r.Get("/s/{shortUrl}", RedirectHandler)
 	// other
-	r.Get("/dashboard", DashboardHandler)
 	r.Get("/privacy", PrivacyHandler)
 	// Static
 	r.Handle("/static/js/*", http.StripPrefix("/static/js/", http.FileServer(http.Dir("./static/js/"))))
@@ -58,20 +54,21 @@ func (app *App) Init(appMode string) {
 	r.Handle("/static/img/*", http.StripPrefix("/static/img", http.FileServer(http.Dir("./static/img/"))))
 	r.Get("/favicon.ico", faviconHandler)
 
-	// Init app
-	log.Println("App Mode : ", appMode)
-	var port string
-	app.Router = r
-	if appMode == "prod" {
-		port = os.Getenv("PORT")
-	} else {
-		port = settings.PORT
+	// Init HOST and PORT
+	var host, port string
+	host = os.Getenv("HOST")
+	if host == "" {
+		host = "127.0.0.1"
+		log.Println("[warning] No HOST found, defaulting to 127.0.0.1")
 	}
+	port = os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
-		log.Println("[warning] No port found")
+		log.Println("[warning] No PORT found, defaulting to 8080")
 	}
-	host := settings.HOST
+	// Init app
+	log.Println("App Mode : ", appMode)
+	app.Router = r
 	app.Addr = host + ":" + port
 	app.Server = http.Server{
 		Addr:    app.Addr,

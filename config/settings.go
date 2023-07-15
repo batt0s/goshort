@@ -1,0 +1,27 @@
+package config
+
+import (
+	"log"
+	"os"
+	"strings"
+)
+
+var BASEPATH string = getBasePath()
+var SECRETKEY string = getSecretFromEnv()
+
+func getBasePath() string {
+	path, err := os.Getwd()
+	if err != nil {
+		log.Fatalf("ERROR while getting BASEPATH\n%s", err.Error())
+	}
+	return path
+}
+
+func getSecretFromEnv() string {
+	secret := os.Getenv("SECRET")
+	if strings.TrimSpace(secret) == "" {
+		log.Println("No SECRET in env.")
+		secret = "ultimateUs31TAsecretkeyolc0IHuxdn9h8FyIe6GpzQkP3ZbBznJ3"
+	}
+	return secret
+}
