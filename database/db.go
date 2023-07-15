@@ -11,8 +11,6 @@ import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
-
-	"github.com/batt0s/goshort/config"
 )
 
 var DB *gorm.DB
@@ -37,13 +35,13 @@ func InitDB(mode string) error {
 			return err
 		}
 	case "dev":
-		name := config.Conf.GetString("dev.db.name")
+		name := "dev.db"
 		db, err = gorm.Open(sqlite.Open(name), &gorm.Config{})
 		if err != nil {
 			return err
 		}
 	case "test":
-		name := config.Conf.GetString("test.db.name")
+		name := "test.db"
 		db, err = gorm.Open(sqlite.Open(name), &gorm.Config{})
 		if err != nil {
 			return err
@@ -54,7 +52,7 @@ func InitDB(mode string) error {
 			return err
 		}
 	}
-	db.AutoMigrate(&Shortened{})
+	db.AutoMigrate(&shortened{})
 	DB = db
 	log.Println("[info] Connected to database.")
 	return nil

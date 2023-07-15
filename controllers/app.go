@@ -1,11 +1,11 @@
 package controllers
 
 import (
+	"github.com/batt0s/goshort/settings"
 	"log"
 	"net/http"
 	"os"
 
-	"github.com/batt0s/goshort/config"
 	"github.com/batt0s/goshort/database"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -19,11 +19,6 @@ type App struct {
 }
 
 func (app *App) Init(appMode string) {
-	// Load config.json
-	err := config.LoadConfig()
-	if err != nil {
-		log.Fatalf("Failed to load config files. Error : %s", err.Error())
-	}
 	// Init Database
 	database.InitDB(appMode)
 	// Init goth (package for google auth)
@@ -70,13 +65,13 @@ func (app *App) Init(appMode string) {
 	if appMode == "prod" {
 		port = os.Getenv("PORT")
 	} else {
-		port = config.Conf.GetString(appMode + ".port")
+		port = settings.PORT
 	}
 	if port == "" {
 		port = "8080"
 		log.Println("[warning] No port found")
 	}
-	host := config.Conf.GetString(appMode + ".host")
+	host := settings.HOST
 	app.Addr = host + ":" + port
 	app.Server = http.Server{
 		Addr:    app.Addr,

@@ -8,6 +8,8 @@ docker-compose.yml
 *.db
 # vscode configs (debug etc.)
 .vscode/
+# goland config
+.idea/
 
 backup/
 tmp/

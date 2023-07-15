@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"encoding/json"
+	"errors"
 	"log"
 	"net/http"
 
@@ -13,20 +13,31 @@ import (
 // Shorten URL Handler
 func ShortenHandler(w http.ResponseWriter, r *http.Request) {
 	// get request body
-	var body RequestBody
-	decoder := json.NewDecoder(r.Body)
-	if err := decoder.Decode(&body); err != nil {
-		sendResponse(w, http.StatusBadRequest, map[string]string{
-			"msg":   "Invalid request payload.",
-			"error": err.Error(),
-		})
+	body, err := getRequestBody(w, r)
+	if err != nil {
+		var mr *malformedRequest
+		if errors.As(err, mr) {
+			http.Error(w, mr.msg, mr.status)
+		} else {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 		log.Println(err)
 		return
 	}
 	// shorten url
-	shortened, err := database.Shorten(body.URL, body.Author, body.IsCustom, body.Custom)
+	shortened, err := database.Shorten(body.URL, body.Author, body.Custom)
 	if err != nil {
 		sendResponse(w, http.StatusBadGateway, map[string]string{"error": err.Error()})
+		log.Println(err)
+		return
+	}
+	// save to database
+	err = shortened.Create()
+	if err != nil {
+		sendResponse(w, http.StatusInternalServerError, map[string]string{
+			"msg":   "Error while inserting to database.",
+			"error": err.Error(),
+		})
 		log.Println(err)
 		return
 	}
@@ -38,10 +49,14 @@ func ShortenHandler(w http.ResponseWriter, r *http.Request) {
 // Handler : Getting Original URL from Short URL
 func GetOriginalHandler(w http.ResponseWriter, r *http.Request) {
 	// get request body
-	var body RequestBody
-	decoder := json.NewDecoder(r.Body)
-	if err := decoder.Decode(&body); err != nil {
-		sendResponse(w, http.StatusBadRequest, map[string]string{"error": "Invalid request payload."})
+	body, err := getRequestBody(w, r)
+	if err != nil {
+		var mr *malformedRequest
+		if errors.As(err, &mr) {
+			http.Error(w, mr.msg, mr.status)
+		} else {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 		log.Println(err)
 		return
 	}
@@ -53,7 +68,7 @@ func GetOriginalHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// send response
-	originalurl := shortened.OriginUrl
+	originalurl := shortened.GetOrigin()
 	sendResponse(w, http.StatusOK, map[string]string{"URL": originalurl})
 }
 
@@ -79,14 +94,11 @@ func GetOriginalHandler(w http.ResponseWriter, r *http.Request) {
 
 // Redirect short url
 func RedirectHandler(w http.ResponseWriter, r *http.Request) {
-
 	shorturl := chi.URLParam(r, "shortUrl")
-
-	var shortened database.Shortened
-	database.DB.First(&shortened, "short_url = ?", shorturl)
-	shortened.Clicks++
-	database.DB.Save(&shortened)
-
-	http.Redirect(w, r, shortened.OriginUrl, http.StatusSeeOther)
-
+	shortened, err := database.GetOriginal(shorturl)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	shortened.Click()
+	http.Redirect(w, r, shortened.GetOrigin(), http.StatusSeeOther)
 }
