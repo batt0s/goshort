@@ -18,6 +18,9 @@ jobs:
       with:
         go-version: 1.18
 
+    - name: Test
+      run: go test -v github.com/batt0s/goshort/tests
+
     - name: Build
       run: go build -v ./...
 

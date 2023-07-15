@@ -6,6 +6,7 @@ docker-compose.yml
 *.log
 # Local dev and test databases (sqlite)
 *.db
+*.sqlite3
 # vscode configs (debug etc.)
 .vscode/
 # goland config
@@ -13,3 +14,4 @@ docker-compose.yml
 
 backup/
 tmp/
+bin/
