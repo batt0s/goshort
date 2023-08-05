@@ -63,11 +63,24 @@ function shortenUrl() {
 
 }
 
+function Toast(text) {
+    Toastify({
+        text: text,
+        duration: 3000,
+        position: "right",
+        gravity: "bottom",
+        style: {
+            background: "#75ccdd",
+        },
+    }).showToast();
+}
+
 function copyShort() {
     let shortObj = document.querySelector("#short");
     const short = shortObj.innerHTML.trim();
     navigator.clipboard.writeText(short);
-    alert("Copied short url "+short+" to clipboard.");
+    //alert("Copied short url "+short+" to clipboard.");
+    Toast("Copied short url "+short+" to clipboard.");
 }
 
 // A function that gets Original URL of a Shortened URL
@@ -111,5 +124,6 @@ function copyOrigin() {
     let originObj = document.querySelector("#origin");
     const origin = originObj.innerHTML.trim();
     navigator.clipboard.writeText(origin);
-    alert("Copied original url "+origin+" to clipboard.");
+    //alert("Copied original url "+origin+" to clipboard.");
+    Toast("Copied original url "+origin+" to clipboard.");
 }
