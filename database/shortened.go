@@ -86,6 +86,7 @@ func Shorten(url string, custom ...string) (*shortened, error) {
 		customShort = custom[0]
 	}
 	shrt.OriginUrl = url
+	var checkCount uint8
 	for {
 		if strings.TrimSpace(customShort) != "" {
 			shortUrl = customShort
@@ -96,6 +97,10 @@ func Shorten(url string, custom ...string) (*shortened, error) {
 		shrt.ShortUrl = shortUrl
 		if shrt.IsValid() {
 			break
+		}
+		checkCount += 1
+		if checkCount > 64 {
+			return nil, errors.New("took too long")
 		}
 	}
 	return shrt, nil
