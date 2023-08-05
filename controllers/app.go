@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/batt0s/goshort/database"
 	"github.com/go-chi/chi/v5"
@@ -30,8 +31,10 @@ func (app *App) Init(appMode string) {
 		AllowedOrigins: []string{"https://*", "http://*"},
 		AllowedMethods: []string{"GET", "POST"},
 	}))
+	// Middlewares
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
+	r.Use(middleware.Timeout(time.Second * 60))
 	// Endpoints
 	// Index Page
 	r.Get("/", IndexHandler)
