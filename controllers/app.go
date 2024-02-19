@@ -7,20 +7,35 @@ import (
 	"time"
 
 	"github.com/batt0s/goshort/database"
+	"github.com/batt0s/goshort/services"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 type App struct {
-	Addr   string
-	Router *chi.Mux
-	Server http.Server
+	Addr     string
+	Router   *chi.Mux
+	Server   http.Server
+	Database *database.Database
+
+	ShortenerService services.ShortenerService
 }
 
-func (app *App) Init(appMode string) {
+func (app *App) Init(appMode string) error {
 	// Init Database
-	database.InitDB(appMode)
+	database, err := database.New("sqlite", "dev.db", &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Error),
+	})
+	if err != nil {
+		return err
+	}
+	app.Database = database
+
+	// Init Services
+	app.ShortenerService = services.NewShortenerService(app.Database.ShortenedRepo)
 
 	// Init goth (package for Google auth)
 	// InitGoth(appMode)
@@ -42,13 +57,13 @@ func (app *App) Init(appMode string) {
 	r.Route("/api", func(api chi.Router) {
 		// Shortener service API endpoints
 		api.Route("/v3", func(sr chi.Router) {
-			sr.Post("/shorten", ShortenHandler)
+			sr.Post("/shorten", app.ShortenHandler)
 			// sr.Post("/customShorten", CustomShortenHandler)
-			sr.Post("/getOrigin", GetOriginalHandler)
+			sr.Post("/getOrigin", app.GetOriginalHandler)
 		})
 	})
 	// Short url redirect handler
-	r.Get("/s/{shortUrl}", RedirectHandler)
+	r.Get("/s/{shortUrl}", app.RedirectHandler)
 	// other
 	r.Get("/privacy", PrivacyHandler)
 	// Static
@@ -77,7 +92,7 @@ func (app *App) Init(appMode string) {
 		Addr:    app.Addr,
 		Handler: app.Router,
 	}
-
+	return nil
 }
 
 // Run App

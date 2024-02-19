@@ -1,58 +1,74 @@
 package tests
 
 import (
-	"github.com/batt0s/goshort/database"
+	"context"
 	"os"
 	"testing"
+
+	"github.com/batt0s/goshort/database"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
-var testCase = [2]string{"", "https://google.com"}
-var testCaseCustom = [2]string{"battos", "https://batt0s.github.io"}
+var db *database.Database
+
+var testCase database.Shortened = database.Shortened{
+	OriginalUrl: "https://google.com",
+	ShortUrl:    "test11",
+}
 
 func TestMain(m *testing.M) {
-	database.InitDB("test")
+	testdb, err := database.New("sqlite", "test.db", &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Error),
+	})
+	if err != nil {
+		panic("Failed to connect database.")
+	}
+	db = testdb
 	exitVal := m.Run()
 	os.Remove("test.db")
 	os.Exit(exitVal)
 }
 
-func TestCreateShortened(t *testing.T) {
-	shrtned, err := database.Shorten(testCase[1])
+func TestAddShortened(t *testing.T) {
+	err := db.ShortenedRepo.Add(context.Background(), testCase)
 	if err != nil {
 		t.Error(err)
-	}
-	if shrtned.OriginUrl != testCase[1] {
-		t.Errorf("got %s, want %s", shrtned.OriginUrl, testCase[1])
-	}
-	if shrtned.ShortUrl == "" {
-		t.Errorf("got short=''")
-	}
-	err = shrtned.Create()
-	if err != nil {
-		t.Error(err)
-	}
-	testCase[0] = shrtned.ShortUrl
-}
-
-func TestCreateShortenedCustom(t *testing.T) {
-	shrtned, err := database.Shorten(testCaseCustom[1], testCaseCustom[0])
-	if err != nil {
-		t.Error(err)
-	}
-	if shrtned.OriginUrl != testCaseCustom[1] {
-		t.Errorf("got %s, want %s", shrtned.OriginUrl, testCaseCustom[1])
-	}
-	if shrtned.ShortUrl != testCaseCustom[0] {
-		t.Errorf("got %s, want %s", shrtned.ShortUrl, testCaseCustom[0])
 	}
 }
 
-func TestGetOriginal(t *testing.T) {
-	shrtned, err := database.GetOriginal(testCase[0])
+func TestFindShortened(t *testing.T) {
+	shortened, err := db.ShortenedRepo.Find(context.Background(), testCase.ShortUrl)
 	if err != nil {
 		t.Error(err)
 	}
-	if shrtned.GetOrigin() != testCase[1] {
-		t.Errorf("got %s, want %s", shrtned.GetOrigin(), testCase[1])
+	if shortened.OriginalUrl != testCase.OriginalUrl {
+		t.Errorf("got %s, want %s", shortened.OriginalUrl, testCase.OriginalUrl)
+	}
+	if shortened.ShortUrl != testCase.ShortUrl {
+		t.Errorf("got %s, want %s", shortened.ShortUrl, testCase.ShortUrl)
+	}
+	testCase.ID = shortened.ID
+}
+
+func TestFindByOriginalShortened(t *testing.T) {
+	shortened, err := db.ShortenedRepo.FindByOriginal(context.Background(), testCase.OriginalUrl)
+	if err != nil {
+		t.Error(err)
+	}
+	if shortened.OriginalUrl != testCase.OriginalUrl {
+		t.Errorf("got %s, want %s", shortened.OriginalUrl, testCase.OriginalUrl)
+	}
+	if shortened.ShortUrl != testCase.ShortUrl {
+		t.Errorf("got %s, want %s", shortened.ShortUrl, testCase.ShortUrl)
+	}
+}
+
+func TestDeleteShortened(t *testing.T) {
+	if err := db.ShortenedRepo.Delete(context.Background(), testCase); err != nil {
+		t.Error(err)
+	}
+	if shouldNil, err := db.ShortenedRepo.Find(context.Background(), testCase.ShortUrl); err == nil {
+		t.Errorf("got %v, want %v", shouldNil, nil)
 	}
 }

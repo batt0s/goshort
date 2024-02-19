@@ -45,7 +45,7 @@ function shortenUrl() {
         if (xhr.readyState === 4 && xhr.status === 200) {
             response = JSON.parse(this.response);
             shortResultDiv.className = "px-8";
-            shortResult.innerHTML = response["URL"];
+            shortResult.innerHTML = response["url"];
         } else if (xhr.readyState === 4 && xhr.status === 400 || xhr.status === 502) {
             response = JSON.parse(this.response);
             shortResultDiv.className = "px-8";
@@ -105,7 +105,7 @@ function getOrigin() {
         if (xhr.readyState === 4 && xhr.status === 200) {
             response = JSON.parse(this.response);
             originResultDiv.className = "px-8";
-            originResult.innerHTML = response["URL"];
+            originResult.innerHTML = response["url"];
         } else if (xhr.readyState === 4 && xhr.status === 400 || xhr.status === 502) {
             response = JSON.parse(this.response);
             originResult.className = "px-8";
