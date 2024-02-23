@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -26,7 +27,7 @@ type App struct {
 
 func (app *App) Init(appMode string) error {
 	// Init Database
-	database, err := database.New("sqlite", "dev.db", &gorm.Config{
+	database, err := database.New("sqlite", fmt.Sprintf("%s.db", appMode), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Error),
 	})
 	if err != nil {
