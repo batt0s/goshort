@@ -33,7 +33,7 @@ func (app *App) ShortenHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// send response
-	shortUrl := r.Host + "/s/" + shortened.ShortUrl
+	shortUrl := "/s/" + shortened.ShortUrl
 	response := map[string]string{"url": shortUrl}
 	sendResponse(w, http.StatusOK, response)
 }
