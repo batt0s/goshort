@@ -1,10 +1,11 @@
 name: Run Tests
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  # only run when build.yml succeed
+  workflow_run:
+    workflows: ["Build"]
+    types:
+      - completed
 
 
 jobs:
