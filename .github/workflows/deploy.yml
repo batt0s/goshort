@@ -1,0 +1,25 @@
+name: Deploy
+
+on:
+    workflow_run:
+        workflows: ["Run Tests"]
+        types:
+            - completed
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+          - name: Deploy using SSH
+            uses: appleboy/ssh-action@master
+            with:
+                host: ${{ secrets.HOST }}
+                username: ${{ secrets.USERNAME }}
+                key: ${{ secrets.SSH_KEY }}
+                port: ${{ secrets.PORT }}
+                script: |
+                    cd /home/ubuntu/goshort
+                    git pull origin master
+                    make build
+                    sudo systemctl restart goshort
