@@ -6,7 +6,7 @@
 
 Yet another URL shortener made in Go. <br>
 A hobby project of me that I made for improving my coding skills. <br>
-[GoShort on Render](https://goshort.onrender.com/).
+[GoShort](https://goshort.battos.dev/).
 
 
 ## Tech Stack
