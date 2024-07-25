@@ -27,13 +27,22 @@ type App struct {
 
 func (app *App) Init(appMode string) error {
 	// Init Database
-	database, err := database.New("sqlite", fmt.Sprintf("%s.db", appMode), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Error),
-	})
+	var db *database.Database
+	var err error
+	if appMode == "prod" {
+		dsn := os.Getenv("POSTGRES_DSN")
+		db, err = database.New("postgres", dsn, &gorm.Config{
+			Logger: logger.Default.LogMode(logger.Error),
+		})
+	} else {
+		db, err = database.New("sqlite", fmt.Sprintf("%s.db", appMode), &gorm.Config{
+			Logger: logger.Default.LogMode(logger.Info),
+		})
+	}
 	if err != nil {
 		return err
 	}
-	app.Database = database
+	app.Database = db
 
 	// Init Services
 	app.ShortenerService = services.NewShortenerService(app.Database.ShortenedRepo)
